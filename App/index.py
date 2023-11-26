@@ -5,6 +5,7 @@ from App import app, login
 from App import admin
 from App.models import User
 from flask_login import login_user, current_user, UserMixin, AnonymousUserMixin
+from stego import *
 
 
 def display_content(file_path):
@@ -33,9 +34,15 @@ def home():
 @app.route("/decode")
 def decode():
     blog_id = request.args.get("blog")
-
+    content = content_list(dao.get_blog(blog_id))
+    content = content.strip()
+    k = app.config["KEY"]
+    msg = nhung(chuoi_nhi_phan=ma_hoa_thong_diep("Found a teddy bear"), chuoi_con=tach_chuoi(content, k))
+    #msg=(giai_ma_nhi_phan(content, key=app.config["KEY"]))
+    #100011110001100000010000000010111000011010010000111111001000100100000
+    #000011110001100000011110000101110000110100100100000010100010010000011101000011100000110100001101001000100010010000001011000011100000101000011011
     return render_template("decode.html",
-                           content=content_list(dao.get_blog(blog_id)))
+                           content=content, message=msg)
 
 
 @login.user_loader
@@ -56,6 +63,19 @@ def login_admin():
     return redirect("/admin")
 
 
-
 if __name__ == "__main__":
     app.run(debug=True)
+
+    r"""content = display_content(r"C:\Users\Khanh\Desktop\Text-Stegaography\App\blogs\Mastering Your Time Proven Strategies for Boosting Productivity.txt")
+    k = app.config["KEY"]
+    # print(tach_chuoi(content, k))
+    #em_text = nhung(chuoi_nhi_phan=ma_hoa_thong_diep("Found a teddy bear"), chuoi_con=tach_chuoi(content, k))
+    #print(tach_chuoi(em_text, k))
+    #print(em_text)
+    content = content.strip()
+    #print(content)
+    #print(ma_hoa_thong_diep("Found a teddy bear"))
+    print("message:", tach_chuoi(content, k))
+    #print("Introduction:\n In a")"""
+
+
