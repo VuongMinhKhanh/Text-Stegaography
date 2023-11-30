@@ -1,10 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "layout/base.html" %}
+{% block title %}Text Decode{% endblock %}
+{% block content %}
+    <div class="container-fluid m-2 border center">
+        <div class="row">
+            {% include 'notif_column.html' %}
+            <div class="col-sm-6">
+                <h1 class="text-center">Thực hiện giấu tin</h1>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link " data-bs-toggle="tab" href="#file">File</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#blog">Blog</a>
+                    </li>
+                </ul>
+                <form method="get">
+                    <div class="tab-content">
+                        <div id="file" class="container tab-pane fade"><br>
+                            <ul class="list-unstyled" role="tablist">
+                                <li class="nav-item">
+                                    <label for="formFile" class="form-label text-danger">File chứa văn bản</label>
+                                    <input class="form-control" type="file" id="formFile">
+                                </li>
+                                <li class="nav-item">
+                                    <label for="formFile" class="form-label text-danger">File chứa thông tin cần
+                                        giấu</label>
+                                    <input class="form-control" type="file" id="formFile">
+                                </li>
+                                <li class="nav-item">
+                                    <label for="" class="form-label text-danger">Bắt đầu thực hiện giấu tin vào văn bản</label><br>
+                                    <button type="button" class="btn btn-primary ms-1 text-danger">START</button>
+
+                                </li>
+                                <li class="nav-item">
+                                    <label for="formFile" class="form-label text-danger">File văn bản sau khi đã giấu
+                                        tin</label>
+                                    <input class="form-control" type="file" id="formFile">
+                                </li>
+                                <br>
+                            </ul>
+                            <ul class="list-unstyled mt-3">
+                                <li class="nav-item">
+                                    <label for="" class="form-label text-danger">Tải về</label>
+                                    <button type="button" class="btn btn-primary ms-1 text-danger">DOWNLOAD</button>
+                                <li class="nav-item">
+                                    <br>
+                                    <label for="" class="form-label text-danger">Gửi đi</label>
+                                    <button type="button" class="btn btn-primary ms-1 text-danger">SEND</button>
+                                </li>
+                                </li>
+                            </ul>
+                            <hr class="d-sm-none">
+                        </div>
+                        <div id="blog" class="container tab-pane active"><br>
+                            <div class="form-floating">
+                                <span for="">Tiêu đề văn bản chứa bên ngoài</span>
+                                <textarea required class="form-control" type="text"
+                                          name="en_cover_text_title">{{ title }}</textarea>
+                            </div>
+                            <div class="form-floating mt-3">
+                                <span for="">Văn bản chứa</span>
+                                <textarea required class="form-control"
+                                          name="en_cover_text_content">{{ content }}</textarea>
+                            </div>
+                            <div class="form-floating mt-3">
+                                <span>Thông tin cần giấu</span>
+                                <textarea required class="form-control"
+                                          name="en_msg">{{ msg }}</textarea>
+                            </div>
+                            <div class="form-floating mt-3">
+                                <button type="submit" class="btn btn-primary">Bắt đầu tách tin</button>
+                            </div>
+                            <div class="form-floating mt-3">
+                                <span for="">Văn bản đã chứa thông tin cần giấu</span>
+                                <textarea class="form-control" type="text" name="em_text">{{ em_text }}</textarea>
+                            </div>
+                            <div class="form-floating mt-3">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <button data-bs-toggle="collapse" data-bs-target="#prompt" type="button"
+                                                class="btn btn-primary ms-1 text-white">Tải lên
+                                        </button>
+                                        <div id="prompt" class="collapse mt-2">
+                                                <button id="upload" type="submit" class="btn btn-primary ms-1 btn-success">
+                                                    Xác nhận
+                                                </button>
+                                            <script>
+                                            // JavaScript to activate function on button click
+                                                document.getElementById('upload').addEventListener('click', function() {
+                                                    // Make an AJAX request to the Flask route
+                                                    var xhr = new XMLHttpRequest();
+                                                    xhr.open('POST', "/activate_function", true);
+                                                    xhr.setRequestHeader('Content-Type', 'application/json');
+                                                    xhr.onreadystatechange = function() {
+                                                        if (xhr.readyState === 4 && xhr.status === 200) {
+                                                            // Handle the response if needed
+                                                            var response = JSON.parse(xhr.responseText);
+                                                            console.log(response.message);
+                                                        }
+                                                    };
+                                                    xhr.send(JSON.stringify({title: "{{ title }}", message: "{{ msg }}", em_text: "{{ em_text }}", user_id : "{{ current_user.id }}" }));
+                                                });
+                                            </script>
+                                            <button type="button" class="btn btn-primary ms-1 btn-danger"
+                                                    data-bs-toggle="collapse" data-bs-target="#prompt">Hủy tải
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button type="button" class="btn btn-primary ms-1 text-white float-end">Gửi đi
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-floating mt-3">
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% include 'title_heading_column.html' %}
+        </div>
+    </div>
+{% endblock %}

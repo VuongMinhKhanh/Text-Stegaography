@@ -15,12 +15,20 @@ encryp_table = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C',
                 '^', '_', '`', '{', '|', '}', '~']
 
 
+def adjust_enter(content):
+    content = content.replace("\n ", "\n")
+    content = content.replace("\n  ", "\n")
+    return content
+
+
 def ma_hoa_thong_diep(thong_diep=None):
+    arr_thong_diep = []
     if thong_diep:
         arr_thong_diep = list(
             thong_diep.upper())  # cắt 1 mảng chữ in hoa thành các kí tự, ví dụ: ['H', 'I', 'E', 'N', 'V', 'Y']
     else:
         'Ban chua nhap thong diep'
+
     s = ''
     for c in arr_thong_diep:
         if c in encryp_table:
@@ -57,13 +65,13 @@ def tach_chuoi(text=None, key=None):  # phải kiểm tra khoá >=2 ở 1 chỗ 
 
 
 def dieu_kien(cover_text,
-              ma):  # hàm kiểm tra xem văn bản dùng để giấu thông tin có ủ điều kiện để giấu thông điệp không
-    a = len(tach_chuoi(cover_text))
+              ma, k):  # hàm kiểm tra xem văn bản dùng để giấu thông tin có ủ điều kiện để giấu thông điệp không
+    a = len(tach_chuoi(cover_text, k))
     b = len(ma_hoa_thong_diep(ma))
     if a > b:  # phải lớn hơn vì chuỗi cuối cùng k kiểm soát chuỗi cuối có mấy khoảng trống, nếu ít hơn2 th k thể giấu
-        return 'True'
+        return True
     else:
-        return 'False'
+        return False
 
 
 def nhung(chuoi_nhi_phan=None, chuoi_con=None):  # nhúng các bit nhị phân vào văn bản
@@ -104,16 +112,19 @@ def giai_ma_nhi_phan(text=None, key=None):
     arr_chuoi_con_gm = tach_chuoi(text, key)
 
     stri = ''
-    # lỗi từ đây
+
     for t in arr_chuoi_con_gm:
+        if not t.__contains__("  "):
+            return stri
         dem = 0  # dem cho so cap bit
         dem1 = 0  # dem cho khoang cach
 
         for c in t:
             if c == ' ':
                 dem += 1
-                if t[dem1 + 1] == ' ' and t[dem1 + 2] == " ":
-                    return stri
+                #print("Message:", t[dem1 + 1], t[dem1 + 2])
+                #if t[dem1 + 1] == ' ' and t[dem1 + 2] == " ":
+                #    return stri
                 if t[dem1 + 1] == ' ':
                     stri = stri + '1'
                 else:

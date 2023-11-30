@@ -35,7 +35,7 @@ class Message(db.Model):
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
 
     def __str__(self):
-        return self.name
+        return str(self.id)
 
 
 class Blog(db.Model):
@@ -43,10 +43,10 @@ class Blog(db.Model):
     title = Column(String(100), nullable=False)
     content = Column(String(300))
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
-    message_id = Column(Integer, ForeignKey(Message.id), nullable=False)
+    message_id = Column(Integer, ForeignKey(Message.id))
 
     def __str__(self):
-        return self.name
+        return str(self.id)
 
 
 if __name__ == "__main__":
@@ -68,10 +68,13 @@ if __name__ == "__main__":
         b2_filename = r"C:\Users\Khanh\Desktop\SalesApp\App\blogs\Embracing Mindfulness - A Guide to Cultivating a Present and Fulfilling Life.txt"
         b2 = Blog(title=os.path.splitext(os.path.basename(b2_filename))[0],
                   content=b2_filename,
-                  user_id=1, message_id=1)
+                  user_id=1)
         b3_filename = r"C:\Users\Khanh\Desktop\SalesApp\App\blogs\The Lifelong Learning Advantage - Unlocking Your Full Potential.txt"
         b3 = Blog(title=os.path.splitext(os.path.basename(b3_filename))[0],
                   content=b3_filename,
                   user_id=1, message_id=1)
         db.session.add_all([b2, b3])
+        db.session.commit()
+        m2 = Message(k=3, message="Communist party", user_id=1)
+        db.session.add_all([m2])
         db.session.commit()"""

@@ -8,6 +8,7 @@ from flask import redirect
 
 admin = Admin(app, name="Quản trị bán hàng", template_mode="bootstrap4")
 
+
 class AuthenticateAdmin(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.user_role == UserRole.ADMIN
