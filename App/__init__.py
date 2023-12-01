@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from urllib.parse import quote
@@ -13,3 +15,4 @@ app.config["PAGE_SIZE"] = 4
 db = SQLAlchemy(app=app)
 login = LoginManager(app=app)
 app.config["KEY"] = 3
+app.config["KEY_ASE"] = os.urandom(32)

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, BOOLEAN, Enum
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, BOOLEAN, Enum, LargeBinary
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from App import app, db
@@ -42,6 +42,7 @@ class Blog(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(100), nullable=False)
     content = Column(String(300))
+    byte_key = Column(LargeBinary(32))
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     message_id = Column(Integer, ForeignKey(Message.id))
 
@@ -51,7 +52,7 @@ class Blog(db.Model):
 
 if __name__ == "__main__":
     with app.app_context():
-        # db.create_all()
+        #db.create_all()
         r"""u1 = User(name="admin", username="admin",
                  password=str(hashlib.md5("123456".encode("utf-8")).hexdigest()),
                  user_role=UserRole.ADMIN)
@@ -77,4 +78,18 @@ if __name__ == "__main__":
         db.session.commit()
         m2 = Message(k=3, message="Communist party", user_id=1)
         db.session.add_all([m2])
+        db.session.commit()
+        b1 = Blog(title="Mastering Your Time Proven Strategies for Boosting Productivity",
+                  content=r"C:\Users\Khanh\Desktop\Text-Stegaography\App\blogs\Mastering Your Time Proven Strategies for Boosting Productivity.txt",
+                  user_id=2, message_id=1)
+
+        b2_filename = r"C:\Users\Khanh\Desktop\Text-Stegaography\App\blogs\Embracing Mindfulness - A Guide to Cultivating a Present and Fulfilling Life.txt"
+        b2 = Blog(title=os.path.splitext(os.path.basename(b2_filename))[0],
+                  content=b2_filename, byte_key=None,
+                  user_id=1)
+        b3_filename = r"C:\Users\Khanh\Desktop\Text-Stegaography\App\blogs\The Lifelong Learning Advantage - Unlocking Your Full Potential.txt"
+        b3 = Blog(title=os.path.splitext(os.path.basename(b3_filename))[0],
+                  content=b3_filename, byte_key=None,
+                  user_id=1, message_id=1)
+        db.session.add_all([b1, b2, b3])
         db.session.commit()"""
