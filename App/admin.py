@@ -6,7 +6,7 @@ from flask_admin import BaseView, expose
 from flask_login import logout_user, current_user
 from flask import redirect
 
-admin = Admin(app, name="Quản trị bán hàng", template_mode="bootstrap4")
+admin = Admin(app, name="Quản trị bài blog", template_mode="bootstrap4")
 
 
 class AuthenticateAdmin(ModelView):
@@ -19,32 +19,20 @@ class AuthenticateUser(BaseView):
         return current_user.is_authenticated
 
 
-class MyProductView(AuthenticateAdmin):
-    column_list = ["id", "name", "price", "active"]
-    column_filters = ["name", "price"]
-    column_searchable_list = ["name"]
-    column_editable_list = ["name", "price"]
+class MyBlogView(AuthenticateAdmin):
+    column_list = ["id", "title", "content", "user_id", "message_id", "byte_key"]
+    column_filters = ["title", "content"]
+    column_searchable_list = ["title"]
+    column_editable_list = ["title", "content"]
     edit_modal = True
-
-
-class MyCategoryView(AuthenticateAdmin):
-    column_list = ["id", "name", "products"]
-
-
-class StatsView(AuthenticateUser):
-    @expose("/")
-    def index(self):
-        return self.render("admin/stats.html")
 
 
 class LogoutView(AuthenticateUser):
     @expose("/")
     def index(self):
         logout_user()
-        return redirect("/admin")
+        return redirect("/")
 
 
-# admin.add_view(MyCategoryView(Category, db.session))
-# admin.add_view(MyProductView(Product, db.session))
-admin.add_view(StatsView(name="Thống kê báo cáo"))
+admin.add_view(MyBlogView(Blog, db.session))
 admin.add_view(LogoutView(name="Đăng xuất"))

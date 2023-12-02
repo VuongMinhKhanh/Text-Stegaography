@@ -1,45 +1,61 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">Website</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mynavbar">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">
-                        <button type="button" class="btn btn-outline-secondary">Home</button>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin">
-                        <button type="button" class="btn btn-outline-secondary">Login</button>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">
-                        <button type="button" class="btn btn-outline-secondary">Logout</button>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/encode">
-                        <button type="button" class="btn btn-outline-secondary">Giấu tin</button>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/decode">
-                        <button type="button" class="btn btn-outline-secondary">Tách tin</button>
-                    </a>
-                </li>
-            </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="text" name="kw" placeholder="Search">
-                <button class="btn btn-primary" type="submit">Search</button>
-            </form>
+{% block content %}
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Web blog</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <button type="button" class="btn btn-outline-secondary">Trang chủ</button>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        {% if not current_user.is_authenticated %}
+                            <a class="nav-link" href="/admin">
+                                <button type="button" class="btn btn-outline-secondary">Đăng nhập</button>
+                            </a>
+                        {% else %}
+                            {% if current_user.username != "admin" %}
+                                <a class="nav-link" href="/admin">
+                                    <button type="button" class="btn btn-outline-secondary">Thông tin cá nhân</button>
+                                </a>
+                            {% else %}
+                                <a class="nav-link" href="/admin">
+                                    <button type="button" class="btn btn-outline-secondary">Trang quản trị</button>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/logoutview">
+                            <button type="button" class="btn btn-outline-secondary">Đăng xuất</button>
+                        </a>
+                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/encode">
+                                <button type="button" class="btn btn-outline-secondary">Giấu tin</button>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/decode">
+                                <button type="button" class="btn btn-outline-secondary">Tách tin</button>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="text" name="kw" placeholder="Nhập từ khóa">
+                    <button class="btn btn-primary" type="submit">Tìm</button>
+                </form>
+            </div>
         </div>
+    </nav>
+    <div class="p-4 bg-primary text-white text-center">
+        <h1>THỰC HÀNH ATHTTT</h1>
+        <p>Đề tài giấu tin trong văn bản</p>
     </div>
-</nav>
-<div class="p-4 bg-primary text-white text-center">
-    <h1>THỰC HÀNH ATHTTT</h1>
-    <p>Đề tài giấu tin trong văn bản</p>
-</div>
+{% endblock %}

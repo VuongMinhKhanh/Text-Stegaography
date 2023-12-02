@@ -7,6 +7,7 @@ from cryptography.hazmat.primitives import padding
 
 def encrypt_file(text, key):
     text = text.encode('utf-8')
+    print(padding.PKCS7(128))
     padder = padding.PKCS7(128).padder()  # assuming AES block size is 128 bits
 
     padded_data = padder.update(text) + padder.finalize()

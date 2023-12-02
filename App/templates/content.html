@@ -1,0 +1,18 @@
+{% extends "layout/base.html" %}
+{% block title %}{{ blog[0].title }}{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <h1>{{ blog[0].title }}</h1>
+        {% if current_user.is_authenticated %}
+            {% if current_user.user_role.value >= 2 %}
+                {% if blog[0].message_id != None %}
+                <div>
+                <a href="/decode?blog={{ blog[0] }}"><button type="" class="btn btn-outline-success m-1">Tách tin</button></a>
+                <button type="button" class="btn btn-outline-danger m-1">Xóa tin</button>
+                </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        <p style="white-space: pre-wrap; font-size: 1em">{{ content | safe }}</p>
+    </div>
+{% endblock %}

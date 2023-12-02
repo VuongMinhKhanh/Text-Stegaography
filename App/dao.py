@@ -12,6 +12,15 @@ def get_blog(blog_id):
     return Blog.query.filter(Blog.id.contains(blog_id))
 
 
+def get_blog_kw(kw):
+    blogs = Blog.query
+
+    if kw:
+        blogs = blogs.filter(Blog.title.contains(kw))
+
+    return blogs.all()
+
+
 def get_last_message_id():
     return Message.query.order_by(Message.id.desc()).first()
 

@@ -49,7 +49,7 @@ def is_text_file(file_path, chunk_size=1024):
 
 
 def download_blog(title, message, em_text, user_id):
-    print("Start downloading!")
+    # print("Start downloading!")
     m = Message(k=k, message=message, user_id=user_id)
     db.session.add(m)
     db.session.commit()
@@ -66,17 +66,34 @@ def download_blog(title, message, em_text, user_id):
              user_id=user_id, message_id=get_last_message_id().id)
     db.session.add(b)
     db.session.commit()
-    print("Finish downloading!")
+    # print("Finish downloading!")
 
 
 @app.route("/")
 def home():
-    blogs = get_all_blogs()
+    #blogs = get_all_blogs()
+    #num = count_blogs()
+    #page_size = app.config["PAGE_SIZE"]
+    kw = request.args.get("kw")
+    blogs = get_blog_kw(kw)
 
-    num = count_blogs()
-    page_size = app.config["PAGE_SIZE"]
-    return render_template("index.html", blogs=blogs, contents=content_list(blogs),
-                           pages=math.ceil(num/page_size), current_user=current_user)
+    return render_template("index.html", blogs=blogs
+                           #pages=math.ceil(num/page_size)
+                            , current_user=current_user)
+
+
+@app.route("/content")
+def content():
+    blog_id = request.args.get('blog')
+    blog = get_blog(blog_id)
+
+    if not is_text_file(blog[0].content):
+        contents = content_list_rb(get_blog(blog_id))
+        contents = decrypt_file(contents, get_blog(blog_id)[0].byte_key)
+    else:
+        contents = content_list(get_blog(blog_id))
+
+    return render_template("content.html", blog=blog, content=contents)
 
 
 @app.route('/activate_function', methods=['POST'])
@@ -109,7 +126,6 @@ def decode():
             else:
                 content = content_list_rb(get_blog(blog_id))
                 content = decrypt_file(content, get_blog(blog_id)[0].byte_key)
-
 
     content = adjust_enter(content)
     k = app.config["KEY"]
@@ -166,8 +182,10 @@ def login_admin():
 
     if user:
         login_user(user)
-
-    return redirect("/admin")
+        if username != "admin":
+            return redirect("/")
+        else:
+            return redirect("/admin")
 
 
 if __name__ == "__main__":
