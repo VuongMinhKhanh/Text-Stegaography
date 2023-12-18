@@ -9,6 +9,7 @@ from flask_login import login_user, current_user, UserMixin, AnonymousUserMixin
 from stego import *
 from AES import *
 import pyAesCrypt
+import send_file
 
 
 k = app.config["KEY"]
@@ -110,6 +111,17 @@ def activate_function():
     #print("Hello", param4)
     download_blog(param1, param2, param3, param4)
     return jsonify({'message': 'Function activated with parameters!'})
+
+
+@app.route("/api/send_emails", methods=["post"])
+def send_emails():
+    data = request.get_json()
+    emails = data.get('emails')
+    title = data.get("title")
+    message = data.get("message")
+    # print(emails, message)
+    send_file.send_emails(emails, message)
+    return jsonify()
 
 
 @app.route("/decode")

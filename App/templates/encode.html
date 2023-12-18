@@ -91,20 +91,20 @@
                                                 document.getElementById('upload').addEventListener('click', function () {
                                                     var em_text_value = document.querySelector('textarea[name="em_text"]').value;
 
-    // Make an AJAX request to the Flask route
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', "/activate_function", true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            // Handle the response if needed
-            var response = JSON.parse(xhr.responseText);
-            console.log(response.message);
-        }
-    };
+                                                    // Make an AJAX request to the Flask route
+                                                    var xhr = new XMLHttpRequest();
+                                                    xhr.open('POST', "/activate_function", true);
+                                                    xhr.setRequestHeader('Content-Type', 'application/json');
+                                                    xhr.onreadystatechange = function() {
+                                                        if (xhr.readyState === 4 && xhr.status === 200) {
+                                                            // Handle the response if needed
+                                                            var response = JSON.parse(xhr.responseText);
+                                                            console.log(response.message);
+                                                        }
+                                                    };
 
-    // Send the updated value of em_text
-    xhr.send(JSON.stringify({title: "{{ title }}", message: "{{ msg }}", em_text: em_text_value, user_id : "{{ current_user.id }}" }));
+                                                    // Send the updated value of em_text
+                                                    xhr.send(JSON.stringify({title: "{{ title }}", message: "{{ msg }}", em_text: em_text_value, user_id : "{{ current_user.id }}" }));
                                                 });
                                             </script>
                                             <button type="button" class="btn btn-primary ms-1 btn-danger"

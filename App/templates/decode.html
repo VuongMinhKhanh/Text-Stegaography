@@ -44,7 +44,7 @@
                                 <li class="nav-item">
                                     <br>
                                     <label for="" class="form-label text-danger">Gửi đi</label>
-                                    <button type="button" class="btn btn-primary ms-1 text-danger">SEND</button>
+                                    <button type="button" onclick="enterEmail()" class="btn btn-primary ms-1 text-danger">SEND</button>
                                 </li>
                             </li>
                         </ul>
@@ -65,7 +65,7 @@
                     </div>
                     <div class="form-floating mt-3">
                         <button type="button" class="btn btn-primary ms-1 text-white">Tải về</button>
-                        <button type="button" class="btn btn-primary ms-1 text-white float-end">Gửi đi</button>
+                        <button id="send" type="button" onclick="enterEmail('{{ message }}')" class="btn btn-primary ms-1 text-white float-end">Gửi đi</button>
                     </div>
                 </div>
             </form>
