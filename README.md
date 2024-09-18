@@ -1,4 +1,4 @@
-# README for Text Steganography App
+# Text Steganography App
 
 ## Project Overview
 
