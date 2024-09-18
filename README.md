@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is a **Text Steganography App** designed as a blog website where users can create and read blogs with hidden messages. The application uses Flask for the backend and Bootstrap for the frontend, providing a responsive and user-friendly interface. The AES algorithm is employed to encode blog content, ensuring that sensitive information is securely embedded within the text, and the main message encrypting and decrypting algorithm is in stego.py.
+This project is a **Text Steganography App** designed as a blog website where users can create and read blogs with hidden messages. The application uses Flask for the backend and Bootstrap for the frontend, providing a responsive and user-friendly interface. The AES algorithm is employed to encode blog content, ensuring that sensitive information is securely embedded within the text, and the main message encrypting and decrypting algorithm is in `stego.py`.
 
 ## Features
 
